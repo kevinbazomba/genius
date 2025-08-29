@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenu %}
+  <link rel="stylesheet" href="{% static 'css/accueil.css' %}">
+<h1>Bienvenue sur notre plateforme </h1>
+<img class="pho" src="{% static 'image/Genius_Africa.png' %}">
+
+<div>
+
+     {% if user.is_authenticated %}
+    
+     {% else %}
+     <p>
+        Fondée en 2001, Genius Africa est une entreprise visionnaire née avec une mission claire : donner à chaque Africain la possibilité de transformer son argent en une véritable source de revenus quotidiens.
+Depuis plus de 20 ans, nous travaillons sans relâche pour bâtir une plateforme solide, transparente et accessible à tous, afin de stimuler l’investissement populaire et de contribuer au développement économique de notre continent.
+
+Chez Genius Africa, nous croyons en la puissance de l’innovation africaine.
+Nos clients achètent des marchandises, et à travers un modèle unique et durable, ils bénéficient d’un gain quotidien de 10% de la valeur de leur achat. Cela signifie que chaque personne qui nous fait confiance voit son argent travailler pour elle, jour après jour.
+
+Notre histoire est une preuve de résilience et de vision :
+
+2001 : Création officielle de Genius Africa.
+
+2005 : Lancement des premières initiatives régionales pour encourager l’investissement citoyen.
+
+2010 : Déploiement de notre réseau de distribution et intégration des nouvelles technologies.
+
+2020 : Digitalisation complète de notre plateforme pour toucher chaque Africain, même dans les zones les plus reculées.
+
+Aujourd’hui : Plus de dizaines de milliers de clients font déjà partie de la grande famille Genius Africa.
+
+Notre engagement va au-delà de l’investissement. Nous nous plaçons aux côtés des gouvernements, ministres, entrepreneurs et citoyens pour bâtir une Afrique forte, autonome et prospère.
+Chaque achat chez Genius Africa est bien plus qu’une transaction : c’est une participation active à la renaissance économique africaine.
+
+Nous invitons les leaders, les investisseurs et tous les citoyens à se joindre à cette aventure. Ensemble, écrivons une nouvelle page de l’histoire de l’Afrique : celle où l’argent des Africains construit l’avenir de l’Afrique.
+
+Genius Africa – Depuis 2001, votre confiance, notre mission.
+    
+    </p>
+       <a href="{% url 'inscription' %}" class="bouton">S'inscrire</a>
+    <a href="{% url 'connexion' %}" class="bouton">Se connecter</a>
+     
+      {% endif %}
+  
+</div>
+{% endblock %}

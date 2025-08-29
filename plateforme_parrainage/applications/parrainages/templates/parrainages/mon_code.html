@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contenu %}
+<div class="parrainage-container">
+    <div class="container">
+        
+        
+        <div class="content">
+            <div class="code-section">
+                <h2>Votre code unique</h2>
+                <div class="code-value">{{ code_parrainage }}</div>
+                <p>Partagez ce code avec vos amis pour leur offrir un avantage spécial</p>
+            </div>
+            
+            <div class="link-section">
+                <h2>Lien de parrainage</h2>
+                <p>Vous pouvez également partager ce lien directement</p>
+                <div class="link-container">
+                    <input type="text" class="link-input" value="{{ lien_parrainage }}" id="lienParrainage" readonly>
+                    <button class="copy-btn" onclick="copierLien()">Copier</button>
+                </div>
+                <p class="share-text">Cliquez sur "Copier" puis partagez le lien sur vos réseaux</p>
+            </div>
+            
+            <div class="share-section">
+                <h3>Partager directement</h3>
+                <div class="social-icons">
+                    <div class="social-icon facebook" onclick="shareOnFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-icon twitter" onclick="shareOnTwitter()">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <div class="social-icon whatsapp" onclick="shareOnWhatsApp()">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="social-icon email" onclick="shareByEmail()">
+                        <i class="far fa-envelope"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="benefits">
+                <h2>Avantages du parrainage</h2>
+                <ul class="benefit-list">
+                    <li>
+                        <i class="fas fa-gift"></i>
+                        <span>Vos amis bénéficient d'un bonus d'inscription </span>
+                    </li>
+                    <li>
+                        <i class="fas fa-coins"></i>
+                        <span>Vous recevez 5% de son premier dépôt pour chaque ami parrainé</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-trophy"></i>
+                        <span>Accédez à des récompenses exclusives après 25 parrainages</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+ 
+</div>
+
+<style>
+    .parrainage-container {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 100%;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    
+    header {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: white;
+        padding: 20px 15px;
+        text-align: center;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+    
+    header p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+    
+    .content {
+        padding: 20px 15px;
+    }
+    
+    .code-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px 15px;
+        margin-bottom: 20px;
+        text-align: center;
+        border: 2px dashed #6a11cb;
+    }
+    
+    .code-section h2 {
+        color: #6a11cb;
+        margin-bottom: 12px;
+        font-size: 1.3rem;
+    }
+    
+    .code-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2575fc;
+        letter-spacing: 2px;
+        margin: 12px 0;
+        padding: 12px 15px;
+        background: white;
+        border-radius: 8px;
+        display: inline-block;
+        word-break: break-all;
+        line-height: 1.3;
+    }
+    
+    .link-section {
+        background: #f0f4ff;
+        border-radius: 12px;
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+    
+    .link-section h2 {
+        color: #2575fc;
+        margin-bottom: 12px;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+    
+    .link-section p {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+    
+    .link-container {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 0;
+    }
+    
+    .link-input {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #2575fc;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+        background: white;
+    }
+    
+    .copy-btn {
+        background: #2575fc;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+        font-size: 1rem;
+    }
+    
+    .copy-btn:hover, .copy-btn:active {
+        background: #1c64e0;
+    }
+    
+    .share-text {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 10px;
+    }
+    
+    .share-section {
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .share-section h3 {
+        margin-bottom: 15px;
+        color: #6a11cb;
+        font-size: 1.2rem;
+    }
+    
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .social-icon:active {
+        transform: scale(0.95);
+    }
+    
+    .facebook { background: #3b5998; }
+    .twitter { background: #1da1f2; }
+    .whatsapp { background: #25d366; }
+    .email { background: #6a11cb; }
+    
+    .benefits {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: white;
+        padding: 20px 15px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+    
+    .benefits h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+    }
+    
+    .benefit-list {
+        list-style: none;
+    }
+    
+    .benefit-list li {
+        margin: 15px 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .benefit-list i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+    
+    .benefit-list span {
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+    
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem;
+        padding: 0 10px;
+    }
+    
+    .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #ffd700;
+        opacity: 0;
+        z-index: -1;
+    }
+    
+    /* Améliorations pour très petits écrans */
+    @media (max-width: 340px) {
+        header h1 {
+            font-size: 1.6rem;
+        }
+        
+        .code-value {
+            font-size: 1.3rem;
+            padding: 10px;
+        }
+        
+        .social-icons {
+            gap: 8px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+    }
+    
+    /* Support des appareils avec hauteur réduite */
+    @media (max-height: 700px) {
+        .parrainage-container {
+            padding: 10px;
+            justify-content: flex-start;
+        }
+        
+        .container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<script>
+    function copierLien() {
+        var inputLien = document.getElementById("lienParrainage");
+        inputLien.select();
+        inputLien.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        
+        // Animation de confirmation
+        const btn = document.querySelector('.copy-btn');
+        const originalText = btn.textContent;
+        btn.textContent = 'Copié !';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+        
+        // Animation de confetti
+        createConfetti();
+    }
+    
+    function createConfetti() {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.width = (Math.random() * 8 + 4) + 'px';
+            confetti.style.height = (Math.random() * 8 + 4) + 'px';
+            confetti.style.opacity = '1';
+            document.body.appendChild(confetti);
+            
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 1500,
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+            });
+            
+            animation.onfinish = () => {
+                confetti.remove();
+            };
+        }
+    }
+    
+    function shareOnFacebook() {
+        const link = encodeURIComponent("{{ lien_parrainage }}");
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${link}`, '_blank');
+    }
+    
+    function shareOnTwitter() {
+        const text = encodeURIComponent("Découvrez cette offre exceptionnelle avec mon code de parrainage !");
+        const link = encodeURIComponent("{{ lien_parrainage }}");
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${link}`, '_blank');
+    }
+    
+    function shareOnWhatsApp() {
+        const text = encodeURIComponent("Découvrez cette offre exceptionnelle avec mon code de parrainage : {{ lien_parrainage }}");
+        window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+    
+    function shareByEmail() {
+        const subject = encodeURIComponent("Invitation à rejoindre notre plateforme");
+        const body = encodeURIComponent(`Je vous invite à rejoindre notre plateforme en utilisant mon lien de parrainage : {{ lien_parrainage }}\n\nVous bénéficierez d'un avantage spécial grâce à ce lien !`);
+        window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+    }
+    
+    // Optimisation pour mobile: empêcher le zoom sur focus des inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('lienParrainage');
+        input.addEventListener('focus', function() {
+            window.scrollTo(0, 0);
+            document.body.style.zoom = "1";
+        });
+    });
+</script>
+{% endblock %}

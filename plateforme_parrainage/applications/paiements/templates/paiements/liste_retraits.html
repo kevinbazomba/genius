@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+<style>
+  .table-container {
+    max-height: 400px;  /* Hauteur max pour activer scroll vertical */
+    max-width: 100%;    /* Largeur max */
+    overflow-y: auto;   /* Scroll vertical si nécessaire */
+    overflow-x: auto;   /* Scroll horizontal si nécessaire */
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap; /* Empêche le retour à la ligne dans les cellules */
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .bouton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  .bouton:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+</style>
+
+<h1>Mes Retraits</h1>
+{% if retraits %}
+<div class="table-container">
+  <table>
+      <thead>
+          <tr>
+              <th>Montant</th>
+              <th>Méthode</th>
+              <th>Statut</th>
+              <th>Date</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for retrait in retraits %}
+          <tr>
+              <td>{{ retrait.montant }} FC</td>
+              <td>{{ retrait.methode }}</td>
+              <td>{{ retrait.get_statut_display }}</td>
+              <td>{{ retrait.cree_le|date:"d/m/Y H:i" }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% else %}
+<p>Vous n'avez pas encore effectué de retraits.</p>
+{% endif %}
+<a href="{% url 'retrait' %}" class="bouton">Demander un nouveau retrait</a>
+
+<script>
+  document.querySelector('.bouton').addEventListener('click', function(event) {
+    if (!confirm('Voulez-vous vraiment demander un nouveau retrait ?')) {
+      event.preventDefault();
+    }
+  });
+</script>
+{% endblock %}

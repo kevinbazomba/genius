@@ -1,0 +1,818 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titre %}Plateforme Genius Africa{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Feuilles de style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- Variables de design systématique --- */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #0f172a;
+            --accent-color: #f59e0b;
+            --light-color: #f8fafc;
+            --light-gray: #f1f5f9;
+            --mid-gray: #e2e8f0;
+            --dark-color: #1e293b;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --border-radius-lg: 16px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+        }
+
+        /* --- Reset et styles de base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- En-tête amélioré --- */
+        header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+         
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-right: 1.25rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-email {
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* --- Menu principal --- */
+        .menu {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu a:not(.bouton-important):hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .bouton {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bouton:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .bouton-important {
+            background: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .bouton-important:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- Menu hamburger --- */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- Contenu principal --- */
+        main {
+            flex: 1;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--mid-gray);
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1.125rem;
+        }
+
+        /* --- Cartes modernes --- */
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid var(--mid-gray);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--mid-gray);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius);
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        /* --- Boutons améliorés --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #1a202c;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background: #0d9669;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--text-dark);
+        }
+
+        .btn-outline:hover {
+            background: var(--light-gray);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* --- Grille moderne --- */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        /* --- Pied de page amélioré --- */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-description {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .footer-heading {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* --- Badges et indicateurs --- */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info-color);
+        }
+
+        /* --- États de chargement --- */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .menu a span.text {
+                display: none;
+            }
+            
+            .menu a {
+                padding: 0.6rem;
+            }
+            
+            .menu a i {
+                margin-right: 0;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .user-info span.user-email {
+                display: none;
+            }
+            
+            .menu {
+                display: none;
+                flex-direction: column;
+                background: var(--secondary-color);
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 280px;
+                padding: 1rem;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+            
+            .menu.active {
+                display: flex;
+                animation: slideIn 0.3s ease;
+            }
+            
+            .menu a {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                border-radius: var(--border-radius-sm);
+                margin-bottom: 0.5rem;
+                justify-content: flex-start;
+            }
+            .img{
+                width: 35px;
+                height: 35px;
+            }
+            
+            .menu a span.text {
+                display: inline;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-heading::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .logo a span.logo-text {
+                font-size: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 1.25rem;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="{% url 'tableau_de_bord' %}">
+                   <img class="img" style='background: black;' src="{% static 'image/Genius_Africa.png' %}" alt="img" width=60 height=60>
+
+                    <span class="logo-text">Genius Africa</span>
+                </a>
+            </div>
+            
+            {% if user.is_authenticated %}
+                <div class="user-info">
+                    <div class="user-avatar">
+                        {{ user.email|first|upper }}
+                    </div>
+                    <span class="user-email">{{ user.email }}</span>
+                </div>
+            {% endif %}
+            
+            <div class="menu" id="menu">
+                {% if user.is_authenticated %}
+                    <!-- Liens principaux -->
+                    <a href="{% url 'tableau_de_bord' %}">
+                        <i class="fas fa-th-large"></i>
+                        <span class="text">Tableau de bord</span>
+                    </a>
+                    
+                    <a href="{% url 'create_order' %}" class="bouton">
+                        <i class="fas fa-plus-circle"></i>
+                        <span class="text">Faire un dépôt</span>
+                    </a>
+                    
+                    <a href="{% url 'liste_depots' %}" class="bouton">
+                        <i class="fas fa-list"></i>
+                        <span class="text">Mes dépôts</span>
+                    </a>
+                    
+                    <a href="{% url 'liste_produits' %}" class="bouton">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="text">Marchandises</span>
+                    </a>
+                    
+                    <a href="{% url 'retrait' %}" class="bouton-important">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span class="text">Demander un retrait</span>
+                    </a>
+                    
+                    <!-- Séparateur visuel -->
+                    <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 0.5rem;"></div>
+                    
+                    <!-- Boutons de parrainage -->
+                    <a href="{% url 'mon_code_parrainage' %}" class="bouton">
+                        <i class="fas fa-gift"></i>
+                        <span class="text">Parrainage</span>
+                    </a>
+                    
+                    <a href="{% url 'liste_filleuls' %}" class="bouton">
+                        <i class="fas fa-users"></i>
+                        <span class="text">Mes invités</span>
+                    </a>
+                    
+                    <a href="{% url 'liste_bonus_parrainage' %}" class="bouton">
+                        <i class="fas fa-coins"></i>
+                        <span class="text">Mes bonus</span>
+                    </a>
+                    
+                    <a href="{% url 'deconnexion' %}" class="bouton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="text">Déconnexion</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'connexion' %}">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="text">Connexion</span>
+                    </a>
+                    <a href="{% url 'inscription' %}" class="bouton-important">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="text">Inscription</span>
+                    </a>
+                {% endif %}
+            </div>
+            
+            <span class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </span>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="container">
+            {% block contenu %}{% endblock %}
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                                       <img class="img" style='background: black;' src="{% static 'image/Genius_Africa.png' %}" alt="img" width=60 height=60>
+
+                    <span>Genius Africa</span>
+                </div>
+                <p class="footer-description">
+                    Plateforme innovante d'investissement et de commerce pour 
+                    l'émergence économique de l'Afrique.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">Liens Rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'tableau_de_bord' %}"><i class="fas fa-arrow-right"></i> Tableau de bord</a></li>
+                    <li><a href="{% url 'liste_produits' %}"><i class="fas fa-arrow-right"></i> Marchandises</a></li>
+                    <li><a href="{% url 'mon_code_parrainage' %}"><i class="fas fa-arrow-right"></i> Programme de parrainage</a></li>
+                    <li><a href="#"><i class="fas fa-arrow-right"></i> FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-arrow-right"></i> Centre d'aide</a></li>
+                    <li><a href="#"><i class="fas fa-arrow-right"></i> Contactez-nous</a></li>
+                    <li><a href="#"><i class="fas fa-arrow-right"></i> Politique de confidentialité</a></li>
+                    <li><a href="#"><i class="fas fa-arrow-right"></i> Conditions d'utilisation</a></li>
+                </ul>
+            </div>
+            
+           
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Genius Africa. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+        
+        // Fermer le menu en cliquant à l'extérieur
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const isClickInsideMenu = menu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggle && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            }
+        });
+        
+        // Animation d'entrée des éléments
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.card, .btn, .footer-section');
+            animatedElements.forEach((element, index) => {
+                element.classList.add('animate-in');
+                element.classList.add(`delay-${index % 4 + 1}`);
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

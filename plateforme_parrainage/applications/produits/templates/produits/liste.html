@@ -1,0 +1,499 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenu %}
+<style>
+    /* Styles de base */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        color: #333;
+        line-height: 1.6;
+        background-color: #f8fafc;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    section {
+        padding: 60px 0;
+    }
+    
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+        color: white;
+        text-align: center;
+        padding: 80px 0;
+    }
+    
+    .hero h1 {
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    
+    .hero p {
+        font-size: 1.3rem;
+        max-width: 800px;
+        margin: 0 auto;
+        opacity: 0.9;
+    }
+    
+    /* Stats Section */
+    .stats {
+        background-color: #0f172a;
+        color: white;
+    }
+    
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #0ea5e9;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+    
+    /* Products Section */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .product-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .product-image {
+        height: 200px;
+        background-color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .product-content {
+        padding: 25px;
+    }
+    
+    .product-title {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        color: #1e293b;
+    }
+    
+    .product-description {
+        color: #64748b;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+    
+    .product-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+    }
+    
+    .product-price, .product-yield, .product-duration {
+        text-align: center;
+    }
+    
+    .detail-value {
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #0ea5e9;
+    }
+    
+    .detail-label {
+        display: block;
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-top: 5px;
+    }
+    
+    .buy-btn {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .buy-btn:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Features Section */
+    .features {
+        background-color: #f1f5f9;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .section-title h2 {
+        font-size: 2.5rem;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+    
+    .section-title p {
+        font-size: 1.2rem;
+        color: #64748b;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        color: white;
+        font-size: 30px;
+    }
+    
+    .feature-title {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        color: #1e293b;
+    }
+    
+    .feature-description {
+        color: #64748b;
+        line-height: 1.6;
+    }
+    
+    /* Media Queries - Design Responsive */
+    @media screen and (max-width: 1200px) {
+        .container {
+            max-width: 1000px;
+        }
+        
+        .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+    }
+    
+    @media screen and (max-width: 992px) {
+        .container {
+            max-width: 800px;
+        }
+        
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .products-grid {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 40px auto 0;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            padding: 30px 25px;
+        }
+    }
+    
+    @media screen and (max-width: 768px) {
+        .container {
+            padding: 0 15px;
+        }
+        
+        section {
+            padding: 50px 0;
+        }
+        
+        .hero {
+            padding: 60px 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.4rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+        }
+        
+        .stats-container {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            padding: 15px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+        }
+    }
+    
+    @media screen and (max-width: 576px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+        
+        .hero p {
+            font-size: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+        }
+        
+        .product-details {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .product-price, .product-yield, .product-duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .detail-value, .detail-label {
+            display: inline;
+        }
+        
+        .detail-value {
+            margin-right: 10px;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 25px;
+        }
+    }
+    
+    @media screen and (max-width: 400px) {
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .product-title, .feature-title {
+            font-size: 1.3rem;
+        }
+        
+        .buy-btn {
+            padding: 12px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Nos Marchandises d'Exception</h1>
+            <p>Investissez dans nos produits sélectionnés et bénéficiez de 10% de rendement quotidien pendant 30 jours !</p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container stats-container">
+            <div class="stat-item">
+                <div class="stat-number">5%</div>
+                <div class="stat-label">Rendement Quotidien</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30</div>
+                <div class="stat-label">Jours Garantis</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">150%</div>
+                <div class="stat-label">Rendement Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24h</div>
+                <div class="stat-label">Support Réactif</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <div class="products-grid">
+                {% for produit in produits %}
+                <div class="product-card">
+                    <div class="product-image">
+                        {% if produit.image %}
+                            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+                        {% else %}
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #6b7280;">
+                                <i class="fas fa-box-open" style="font-size: 48px;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">{{ produit.nom }}</h3>
+                        <p class="product-description">{{ produit.description }}</p>
+                        <div class="product-details">
+                            <div class="product-price">
+                                <span class="detail-value">{{ produit.prix }} FC</span>
+                                <span class="detail-label">Prix</span>
+
+                            </div>
+                            <div class="product-yield">
+                                <span class="detail-value">{{ produit.taux_quotidien }}%</span>
+                                <span class="detail-label">Quotidien</span>
+                            </div>
+                            <div class="product-duration">
+                                <span class="detail-value">{{ produit.duree_jours }}j</span>
+                                <span class="detail-label">Durée</span>
+                            </div>
+                        </div>
+                        <a href="{% url 'achat' produit.id %}" class="buy-btn">Acheter Maintenant</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pourquoi Investir Avec Nous ?</h2>
+                <p>Découvrez les avantages exclusifs de notre plateforme d'investissement.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Sécurité Garantie</h3>
+                    <p class="feature-description">Tous nos investissements sont assurés et garantis contre les pertes.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Rendements Élevés</h3>
+                    <p class="feature-description">Bénéficiez des meilleurs rendements du marché, jusqu'à 10% par jour.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">Disponibilité 24/7</h3>
+                    <p class="feature-description">Notre plateforme est accessible à tout moment, où que vous soyez.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+
+
+
+{% endblock %}

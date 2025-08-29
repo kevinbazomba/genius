@@ -1,0 +1,274 @@
+
+{% extends 'base.html' %}
+
+{% block contenu %}
+<div class="payment-container">
+  <div class="diamond-background">
+    <div class="diamond-shape"></div>
+    <div class="diamond-shape"></div>
+    <div class="diamond-shape"></div>
+    <div class="diamond-shape"></div>
+    <div class="diamond-shape"></div>
+  </div>
+  
+  <div class="payment-card">
+    <div class="card-header">
+      <div class="money-icon">$</div>
+      <h2 class="payment-title">Faire un dépôt</h2>
+    </div>
+    
+    <form method="post" class="payment-form">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="payment-method" class="form-label">
+          <i class="icon">💳</i> Méthode de paiement
+        </label>
+        <div class="select-wrapper">
+          <select id="payment-method" name="name" class="form-select" required>
+            <option value="" disabled selected>Sélectionnez une méthode</option>
+            <option value="Orange_money">Orange money</option>
+            <option value="M_pesa">M-pesa</option>
+            <option value="Airtel_money">Airtel money</option>
+            <option value="Afrimoney">Afrimoney</option>
+        
+          </select>
+          <div class="select-arrow">▼</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="amount" class="form-label">
+          <i class="icon">💰</i> Montant (CDF)
+        </label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0" class="form-input" placeholder="Entrez le montant" required>
+      </div>
+      
+      <button type="submit" class="submit-button">
+        <span class="button-text">faire un dépôt</span>
+        <span class="button-icon">→</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  /* Modern styling with diamond background */
+  .payment-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  }
+  
+  .diamond-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .diamond-shape {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, #c0c0c0, #e0e0e0, #a0a0a0);
+    transform: rotate(45deg);
+    opacity: 0.4;
+  }
+  
+  .diamond-shape:nth-child(1) {
+    top: 10%;
+    left: 5%;
+    width: 120px;
+    height: 120px;
+  }
+  
+  .diamond-shape:nth-child(2) {
+    top: 70%;
+    left: 80%;
+    width: 80px;
+    height: 80px;
+  }
+  
+  .diamond-shape:nth-child(3) {
+    top: 30%;
+    left: 85%;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .diamond-shape:nth-child(4) {
+    top: 60%;
+    left: 10%;
+    width: 90px;
+    height: 90px;
+  }
+  
+  .diamond-shape:nth-child(5) {
+    top: 15%;
+    left: 65%;
+    width: 70px;
+    height: 70px;
+  }
+  
+  .payment-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  
+  .card-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  
+  .money-icon {
+    font-size: 48px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    background: linear-gradient(135deg, #e6e6e6, #f9f9f9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a5568;
+    border: 2px solid silver;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .payment-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+    background: linear-gradient(45deg, #4a5568, #2d3748);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .form-group {
+    margin-bottom: 28px;
+  }
+  
+  .form-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  
+  .form-label .icon {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  .select-wrapper {
+    position: relative;
+  }
+  
+  .form-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: white;
+    font-size: 16px;
+    appearance: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  }
+  
+  .select-arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+    pointer-events: none;
+    font-size: 12px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  }
+  
+  .submit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #4a5568, #2d3748);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+  
+  .submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #2d3748, #4a5568);
+  }
+  
+  .button-text {
+    margin-right: 10px;
+  }
+  
+  .button-icon {
+    font-weight: 400;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .payment-card {
+      padding: 30px 20px;
+    }
+    
+    .payment-title {
+      font-size: 24px;
+    }
+  }
+</style>
+{% endblock %}

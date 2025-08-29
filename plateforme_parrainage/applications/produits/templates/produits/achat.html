@@ -1,0 +1,677 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenu %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achat : {{ produit.nom }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e429f;
+            --secondary: #0e9f6e;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --accent: #ff5a1f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 86, 219, 0.9), rgba(30, 66, 159, 0.9));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb span {
+            margin: 0 10px;
+        }
+        
+        /* Product Section */
+        .product-section {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .product-image {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 350px;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .product-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .product-description {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        
+        .product-specs {
+            margin-bottom: 30px;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .spec-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .spec-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        /* Purchase Form */
+        .purchase-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .calculation {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .calculation-total {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid var(--gray);
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            background: var(--light-gray);
+            padding: 60px 0;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .benefit-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .benefit-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-description {
+            color: var(--gray);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .hero {
+                padding: 30px 0;
+                margin-bottom: 30px;
+                border-radius: 0;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+                margin-bottom: 12px;
+            }
+            
+            .breadcrumb {
+                padding: 10px 0;
+                font-size: 13px;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .breadcrumb span {
+                margin: 0 8px;
+            }
+            
+            .product-section {
+                flex-direction: column;
+                gap: 25px;
+                margin-bottom: 35px;
+            }
+            
+            .product-image, .product-details {
+                min-width: 100%;
+                flex: none;
+            }
+            
+            .product-image {
+                height: 250px;
+                border-radius: 8px;
+            }
+            
+            .product-title {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            
+            .product-description {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .spec-item {
+                padding: 12px 0;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .purchase-form {
+                padding: 20px;
+                margin-bottom: 30px;
+                border-radius: 8px;
+            }
+            
+            .form-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+                padding-bottom: 12px;
+            }
+            
+            .form-group input {
+                padding: 12px;
+                font-size: 16px;
+            }
+            
+            .calculation {
+                padding: 15px;
+                margin: 20px 0;
+            }
+            
+            .calculation-row {
+                flex-direction: column;
+                gap: 5px;
+                margin-bottom: 12px;
+            }
+            
+            .calculation-total {
+                font-size: 17px;
+                margin-top: 15px;
+                padding-top: 15px;
+            }
+            
+            .submit-btn {
+                padding: 16px;
+                font-size: 17px;
+            }
+            
+            .benefits {
+                padding: 40px 0;
+                border-radius: 8px;
+                margin-bottom: 30px;
+            }
+            
+            .section-title {
+                margin-bottom: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 26px;
+                margin-bottom: 12px;
+            }
+            
+            .section-title p {
+                font-size: 16px;
+                padding: 0 10px;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .benefit-card {
+                padding: 25px 20px;
+            }
+            
+            .benefit-icon {
+                font-size: 35px;
+                margin-bottom: 15px;
+            }
+            
+            .benefit-title {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 25px 0;
+            }
+            
+            .hero h1 {
+                font-size: 24px;
+            }
+            
+            .product-image {
+                height: 200px;
+            }
+            
+            .product-title {
+                font-size: 22px;
+            }
+            
+            .spec-value {
+                font-size: 15px;
+            }
+            
+            .form-title {
+                font-size: 19px;
+            }
+            
+            .calculation-total {
+                font-size: 16px;
+            }
+            
+            .submit-btn {
+                font-size: 16px;
+                padding: 15px;
+            }
+            
+            .section-title h2 {
+                font-size: 24px;
+            }
+            
+            .benefit-card {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Achat : {{ produit.nom }}</h1>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="{% url 'tableau_de_bord' %}">Accueil</a> <span>&gt;</span> 
+            <a href="{% url 'liste_produits' %}">Marchandises</a> <span>&gt;</span> 
+            <span>{{ produit.nom }}</span>
+        </div>
+        
+        <!-- Product Section -->
+        <section class="product-section">
+            <div class="product-image">
+                {% if produit.image %}
+                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+                {% else %}
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #6b7280; flex-direction: column;">
+                        <i class="fas fa-box-open" style="font-size: 64px; margin-bottom: 20px;"></i>
+                        <p>Image non disponible</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="product-details">
+                <h2 class="product-title">{{ produit.nom }}</h2>
+                <p class="product-description">{{ produit.description }}</p>
+                
+                <div class="product-specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Prix unitaire</span>
+                        <span class="spec-value">{{ produit.prix }} FC</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Gain quotidien</span>
+                        <span class="spec-value">{{ gain }} CDF</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Durée de l'investissement</span>
+                        <span class="spec-value">{{ produit.duree_jours }} jours</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Gain total</span>
+                        <span class="spec-value">{{ gain_total }} CDF</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Purchase Form -->
+        <section class="purchase-form">
+            <h3 class="form-title">Formulaire d'acquisition</h3>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="quantite">Quantité désirée</label>
+                    <input type="number" id="quantite" name="quantite" value="1" min="1" required oninput="updateCalculation()">
+                </div>
+                
+                <div class="calculation">
+                    <div class="calculation-row">
+                        <span>Prix unitaire:</span>
+                        <span id="unit-price">{{ produit.prix }} FC</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>Quantité:</span>
+                        <span id="quantity">1</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>Total à payer:</span>
+                        <span id="total-price">{{ produit.prix }} FC</span>
+                    </div>
+                    <div class="calculation-row calculation-total">
+                        <span>Gain quotidien estimé:</span>
+                        <span id="daily-yield">{{ gain }} CDF</span>
+                    </div>
+                    <div class="calculation-row calculation-total">
+                        <span>Gain total sur {{ produit.duree_jours }} jours:</span>
+                        <span id="total-yield">{{ gain_total }}CDF</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-lock"></i> Confirmer l'acquisition
+                </button>
+            </form>
+        </section>
+        
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="section-title">
+                <h2>Avantages de cet investissement</h2>
+                <p>Découvrez pourquoi cet investissement est avantageux pour vous</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="benefit-title">Rendement Garanti</h3>
+                    <p class="benefit-description">Bénéficiez de {{ produit.taux_quotidien }}% de rendement quotidien garanti pendant {{ produit.duree_jours }} jours.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="benefit-title">Sécurité</h3>
+                    <p class="benefit-description">Votre investissement est entièrement sécurisé et assuré contre les pertes.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="benefit-title">Disponibilité</h3>
+                    <p class="benefit-description">Retirez vos gains à tout moment après les 24 heures de maturation.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!-- ===== Modal d’erreur ===== -->
+<div id="errorModal" class="modal-backdrop">
+    <div class="modal-card">
+        <div class="modal-title">Erreur</div>
+        <div id="errorMessage"></div>
+        <button class="btn-close">OK</button>
+    </div>
+</div>
+
+<style>
+    .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+    .modal-backdrop.show { display: flex; }
+
+    .modal-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        max-width: 400px;
+        width: calc(100% - 40px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        text-align: center;
+        animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn {
+        from {opacity:0; transform:translateY(15px);}
+        to   {opacity:1; transform:translateY(0);}
+    }
+    .modal-title {
+        font-size: 1.2rem;
+        color: #b00020;
+        margin-bottom: 10px;
+    }
+    .btn-close {
+        margin-top: 15px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        background: #b00020;
+        color: white;
+        cursor: pointer;
+    }
+    .btn-close:hover { opacity: 0.9; }
+</style>
+
+{% if messages %}
+<script>
+    let messages = [
+        {% for message in messages %}
+            { level: "{{ message.tags }}", text: "{{ message|escapejs }}" },
+        {% endfor %}
+    ];
+    let errorMsg = messages.find(m => m.level.includes("error"));
+    if (errorMsg) {
+        window.onload = function() {
+            let modal = document.getElementById("errorModal");
+            let msgBox = document.getElementById("errorMessage");
+            msgBox.textContent = errorMsg.text;
+            modal.classList.add("show");
+
+            let closeBtns = modal.querySelectorAll(".btn-close");
+            closeBtns.forEach(btn => btn.onclick = () => modal.classList.remove("show"));
+
+            modal.onclick = (e) => { if(e.target === modal) modal.classList.remove("show"); };
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") modal.classList.remove("show");
+            });
+        };
+    }
+</script>
+{% endif %}
+{% endblock %}
